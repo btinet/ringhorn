@@ -6,9 +6,17 @@
     "authors": [
         {
             "name": "Benjamin Voigt",
-            "email": "benjamin.voigt@btinet.org"
+            "email": "benjamin.voigt@btinet.org",
+			"homepage": "https://www.simplemvc.com"
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+	"autoload": {
+        "psr-4": {
+            "Btinet\\SimpleMVC\\": "src/"
+        }
+    },
+    "require": {
+		"twig/twig:^2.0"
+	}
 }
