@@ -1,0 +1,14 @@
+{
+    "name": "btinet/simplemvc",
+    "description": "Simple PHP MVC Framework",
+    "type": "framework",
+    "license": "mit",
+    "authors": [
+        {
+            "name": "Benjamin Voigt",
+            "email": "benjamin.voigt@btinet.org"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
