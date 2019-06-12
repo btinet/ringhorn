@@ -26,7 +26,7 @@ class Bootstrap {
 
 	function __construct() {
 		
-		Session::init();
+		Modules\ Session::init();
 		
 		$this->_getUrl();
 		$this->_getPOST();
