@@ -118,7 +118,7 @@ class Bootstrap {
 
 	function _errors( $error ) {
 
-		$this->_controller = new Errors( $error );
+		$this->_controller = new Core\ Errors( $error );
 		$this->_controller->index();
 		die;
 	}
