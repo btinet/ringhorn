@@ -9,6 +9,8 @@
 
 namespace  Btinet\ SimpleMVC\ Core;
 
+use Twig\ Loader;
+
 class Errors extends Controller {
 
 	private $_error = null;
