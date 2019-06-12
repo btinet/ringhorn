@@ -9,6 +9,8 @@
 
 namespace  Btinet\ SimpleMVC\ Core;
 
+use Twig\ Loader;
+
 class Controller {
 
 	protected $_view;
