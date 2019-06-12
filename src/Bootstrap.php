@@ -71,7 +71,7 @@ class Bootstrap {
 	private
 
 	function _loadDefaultController() {
-		$this->_defaultController = 'Core\\' . $this->_defaultController;
+		$this->_defaultController = APPSPACE . $this->_defaultController;
 		$this->_controller = new $this->_defaultController();
 		$this->_controller->index();
 	}
@@ -81,7 +81,7 @@ class Bootstrap {
 	function _loadExistingController() {
 
 		//set url for controllers
-		$controller = 'Core\\' . $this->_url[ 0 ];
+		$controller = APPSPACE . $this->_url[ 0 ];
 
 		if ( class_exists( $controller ) ) {
 			
