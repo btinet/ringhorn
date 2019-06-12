@@ -23,7 +23,7 @@ class Controller {
 		$this->_view = new View();
 		
 		$name = get_class($this);		
-		$modelpath = BASEDIR . 'Models' . DS . $name . 'Model.php';
+		$modelpath = APPPATH . 'Models' . DS . $name . 'Model.php';
 
 		if (file_exists($modelpath)) {
 			require $modelpath;
