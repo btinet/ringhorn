@@ -9,7 +9,7 @@
 
 namespace  Btinet\ SimpleMVC\ Core;
 
-use Twig\ Loader;
+
 
 class Controller {
 
@@ -33,12 +33,7 @@ class Controller {
 			$modelName = $name . 'Model';
 			$this->_model = new $modelName();
 		};		
-		
-		$this->_data[ 'parent_template' ] = 'default.tpl';		
-		
-		$loader = new Loader\ FilesystemLoader( TPATH );
-		$this->_template = new\ Twig\ Environment( $loader );
-		
+				
 	}
 
 }
