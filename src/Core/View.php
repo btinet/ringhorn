@@ -9,32 +9,35 @@
 
 namespace  Btinet\ SimpleMVC\ Core;
 
+use Btinet\ SimpleMVC\ Core;
+
 use Twig\ Loader;
 
 class View {
 
+	protected $_template;
+	
 	public
 
 	function assign( $path, $data = false, $parent = "default" ) {
 
 		$loader = new Loader\ FilesystemLoader( TPATH );
-		return new\ Twig\ Environment( $loader );
+		$this->_template = new\ Twig\ Environment( $loader );
 		
-		$parent = "$parent.tpl";		
+		$data['parent_template'] = "$parent.tpl";		
 
 		if ( file_exists( TPATH . "$path.tpl" ) ) {
 
 			$template = $this->_template->load( "$path.tpl" );
 
-			echo $template->render( [ 'data' => $data ] );
+			return $template->render( [ 'data' => $data ] );
+			
 			
 		} else {
-
-			$view = new Core\ Errors( "Datei nicht gefunden:" );
-
-			$view->index();
-
-		}	
+			
+			return "File not found";
+			
+		}
 
 	}
 	

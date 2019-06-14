@@ -15,10 +15,10 @@ class Controller {
 
 	protected $_view;
 	protected $_model;
-	public $_get;
-	public $_post;
+	protected $_get;
+	protected $_post;
 	protected $_data;
-	protected $_template;
+
 	
 
 	function __construct() {
