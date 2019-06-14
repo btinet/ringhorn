@@ -15,12 +15,17 @@ class Controller {
 
 	protected $_view;
 	protected $_model;
+	public $_get;
+	public $_post;
 	protected $_data;
 	protected $_template;
 	
 
-	function __construct() {
+	function __construct( array $get = NULL, array $post = NULL ) {
 		$this->_view = new View();
+		
+		$this->_get = $get;
+		$this->_post = $post;
 		
 		$name = get_class($this);		
 		$modelpath = APPPATH . 'Models' . DS . $name . 'Model.php';
