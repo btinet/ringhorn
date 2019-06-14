@@ -21,12 +21,9 @@ class Controller {
 	protected $_template;
 	
 
-	function __construct( array $get = NULL, array $post = NULL ) {
+	function __construct() {
 		$this->_view = new View();
-		
-		$this->_get = $get;
-		$this->_post = $post;
-		
+			
 		$name = get_class($this);		
 		$modelpath = APPPATH . 'Models' . DS . $name . 'Model.php';
 
