@@ -81,7 +81,7 @@ class Bootstrap {
 	function _loadExistingController() {
 
 		//set url for controllers
-		$controller = APPSPACE . $this->_url[ 0 ];
+		$controller = APPSPACE . ucfirst($this->_url[ 0 ]);
 
 		if ( class_exists( $controller ) ) {
 			
