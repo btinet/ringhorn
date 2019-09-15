@@ -9,6 +9,8 @@
 
 namespace  Btinet\ SimpleMVC\ Modules;
 
+use \PDO;
+
 class Database extends PDO {
 
    function __construct() {
