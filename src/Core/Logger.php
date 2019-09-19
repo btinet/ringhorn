@@ -15,7 +15,7 @@ class Logger {
 
    public static function customErrorMsg($e = '') {
        echo "<p>Es ist ein Fehler aufgetreten.</p>";
-       echo "<p>$e</p>";
+       echo "<p><pre><code>$e</code></pre></p>";
        exit;
    }
 
@@ -29,7 +29,7 @@ class Logger {
 
        if ( ($number !== E_NOTICE) && ($number < 2048) ) {
            self::errorMessage($msg);
-           // self::customErrorMsg($e);
+            self::customErrorMsg($e);
        }
 
        return 0;
