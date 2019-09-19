@@ -10,6 +10,7 @@
 namespace  Btinet\ SimpleMVC\ Modules;
 
 use \PDO;
+use Btinet\ SimpleMVC\ Core;
 
 class Database extends PDO {
 
@@ -19,8 +20,8 @@ class Database extends PDO {
          $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
          $this->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
       } catch(PDOException $e) {
-         Logger::newMessage($e);
-         Logger::customErrorMsg();
+         Core\Logger::newMessage($e);
+         Core\Logger::customErrorMsg();
       }
    }
 
