@@ -13,6 +13,7 @@ use \PDO;
 use Btinet\ SimpleMVC\ Core;
 
 class Database extends PDO {
+    // test commit;
 
    function __construct() {
       try {
