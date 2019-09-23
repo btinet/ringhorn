@@ -17,7 +17,7 @@ class Session {
       if (self::$_sessionStarted == false) {
          session_start();
          self::$_sessionStarted = true;
-      }
+      }      
    }
 
    public static function set($key, $value) {

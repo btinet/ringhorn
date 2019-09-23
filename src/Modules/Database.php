@@ -16,6 +16,7 @@ class Database extends PDO {
   
 
    function __construct() {
+  	
       try {
          parent::__construct(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
          $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -26,7 +27,7 @@ class Database extends PDO {
       }
    }
 
-   public function select($prepared_sql, $data = array()) {
+   public function select($prepared_sql, $data = array(), $fetch = false) {
        
       $statement = $this->prepare($prepared_sql);
       foreach($data as $key => $value) {
@@ -40,8 +41,11 @@ class Database extends PDO {
             Core\Logger::newMessage($e);
             Core\Logger::customErrorMsg();
         }
-
-      return $statement->fetchAll();
+        if ($fetch){    
+            return $statement->fetch();
+        } else {
+            return $statement->fetchAll();
+        }
    }
 
    /**

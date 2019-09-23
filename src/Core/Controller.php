@@ -9,7 +9,7 @@
 
 namespace  Btinet\ SimpleMVC\ Core;
 
-
+use Btinet\ SimpleMVC\ Modules;
 
 class Controller {
 
@@ -18,21 +18,13 @@ class Controller {
 	protected $_get;
 	protected $_post;
 	protected $_data;
+	protected $_user;
 
 	
 
 	function __construct() {
-		$this->_view = new View();
-			
-		$name = get_class($this);		
-		$modelpath = APPPATH . 'Models' . DS . $name . 'Model.php';
-
-		if (file_exists($modelpath)) {
-			require $modelpath;
-
-			$modelName = $name . 'Model';
-			$this->_model = new $modelName();
-		};		
+		$this->_view = new View();			
+		$this->_user = new Modules\User();		
 				
 	}
 
