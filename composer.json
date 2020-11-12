@@ -1,22 +1,25 @@
 {
-    "name": "btinet/simplemvc",
-    "description": "Simple PHP MVC Framework",
+    "name": "btinet/ringhorn",
+    "description": "PHP Framework",
     "type": "framework",
     "license": "mit",
     "authors": [
         {
             "name": "Benjamin Voigt",
-            "email": "benjamin.voigt@btinet.org",
-			"homepage": "https://www.simplemvc.com"
+       	    "email": "benjamin.voigt@btinet.org",
+	    "homepage": "https://www.simplemvc.com"
         }
     ],
     "minimum-stability": "dev",
+    "require": {
+        "symfony/dotenv": "^5.1",
+        "twig/twig": "^3.0",
+        "ext-pdo": "*",
+        "composer/installers": "~1.0"
+    },
 	"autoload": {
         "psr-4": {
-            "Btinet\\SimpleMVC\\": "src/"
+            "Btinet\\Ringhorn\\": "src/"
         }
-    },
-    "require": {
-		"twig/twig": "^2.0"
-	}
+    }
 }
