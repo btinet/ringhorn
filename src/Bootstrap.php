@@ -1,6 +1,6 @@
 <?php
 
-namespace Btinet\Baldur;
+namespace Btinet\Ringhorn;
 
 
 use Exception;
