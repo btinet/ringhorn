@@ -14,11 +14,17 @@ class Bootstrap {
 
     /**
      * Kernel constructor.
+     * @throws Exception
      */
     function __construct()
     {
+
+        if (!defined('project_root')) {
+            throw new Exception('constant "project_root" must be defined in index.php');
+        }
+
         $dotenv = new Dotenv();
-        $dotenv->loadEnv(dirname(__DIR__) . '/.env');
+        $dotenv->loadEnv(project_root. '/.env');
 
         if (isset($_ENV['APP_ENV'])) {
             switch ($_ENV['APP_ENV']) {
