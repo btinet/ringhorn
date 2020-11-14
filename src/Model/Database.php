@@ -23,10 +23,12 @@ class Database extends PDO {
         }
     }
 
+
+
     public function select($prepared_sql, $data = array()) {
         $statement = $this->prepare($prepared_sql);
         foreach($data as $key => $value) {
-            $statement->bindValue("$key", $value);
+            $statement->bindValue(':'.$key, $value);
         }
         $this->execute($statement);
         return $statement->fetchAll();
@@ -40,14 +42,17 @@ class Database extends PDO {
     public function insert($table, $data) {
         ksort($data);
 
-        $fieldNames = implode(',', array_keys($data));
+        $table = strtolower($table);
+        $fieldNames = implode(', ', array_keys($data));
         $fieldValues = ':' . implode(', :', array_keys($data));
 
-        $stmt = $this->prepare("INSERT INTO $table ($fieldNames) VALUES ($fieldValues)");
+        $stmt = $this->prepare(" INSERT INTO $table ($fieldNames) VALUES ($fieldValues) ");
 
         foreach ($data as $key => $value) {
-            $stmt->bindValue(":$key", $value);
+            $stmt->bindParam(":$key", $value, PDO::PARAM_STR);
         }
+
+
 
         $this->execute($stmt);
         return $this->lastInsertId();

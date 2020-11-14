@@ -5,11 +5,13 @@ namespace Btinet\Ringhorn\Controller;
 
 use Btinet\Ringhorn\Flash;
 use Btinet\Ringhorn\Logger;
+use Btinet\Ringhorn\Model\EntityManager;
 use Btinet\Ringhorn\Password;
 use Btinet\Ringhorn\Request;
 use Btinet\Ringhorn\Session;
 use Btinet\Ringhorn\View\View;
 use Exception;
+use \ReflectionClass;
 
 
 abstract class AbstractController
@@ -45,7 +47,7 @@ abstract class AbstractController
      */
     protected Flash $flash;
 
-    /**
+        /**
      * AbstractController constructor.
      */
     function __construct()
@@ -55,12 +57,28 @@ abstract class AbstractController
         $this->session = new Session();
         $this->session->init();
 
+
+
         $this->flash = new Flash($this->view);
         $this->passwordEncoder = new Password();
         $this->request = new Request();
         $this->request->csrf_token = $this->session->get('csrf_token');
         $this->generateToken();
 
+    }
+
+    public function getEntityManager(){
+        return new EntityManager();
+    }
+
+    public function getRepository($entity_class){
+        $entity = new ReflectionClass($entity_class);
+        $repository = 'App\Repository\\'.$entity->getShortName().'Repository';
+
+        if(class_exists($repository)){
+            return new $repository($entity);
+        }
+        return false;
     }
 
     public function generateToken(){

@@ -51,7 +51,7 @@ class Request
      */
     public function getQuery($FormFieldName)
     {
-        $query = filter_input(INPUT_POST, $FormFieldName, FILTER_SANITIZE_SPECIAL_CHARS);
+        $query = filter_input(INPUT_POST, $FormFieldName, FILTER_SANITIZE_STRIPPED);
         return $this->query = $query;
     }
 
