@@ -105,7 +105,8 @@ abstract class AbstractController
     }
 
     public function redirect($status, $url = null) {
-        header('Location: ' . host . $url, true, $status);
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        header('Location: ' .$protocol.host.'/'.$url, true, $status);
         exit;
     }
 

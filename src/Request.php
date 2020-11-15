@@ -3,6 +3,7 @@
 
 namespace Btinet\Ringhorn;
 
+use Exception;
 
 class Request
 {
@@ -49,10 +50,20 @@ class Request
      * @param $FormFieldName
      * @return mixed
      */
-    public function getQuery($FormFieldName)
+    public function getQuery(string $FormFieldName)
     {
-        $query = filter_input(INPUT_POST, $FormFieldName, FILTER_SANITIZE_STRIPPED);
-        return $this->query = $query;
+        try {
+            if ($FormFieldName !== NULL){
+                $query = filter_input(INPUT_POST, $FormFieldName, FILTER_SANITIZE_STRIPPED);
+                return $this->query = $query;
+            } else {
+                throw new Exception($query_exception);
+            }
+        } catch (Exception $query_exception){
+            Logger::newMessage($query_exception);
+            Logger::customErrorMsg($query_exception);
+        }
+
     }
 
 }

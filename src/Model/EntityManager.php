@@ -4,6 +4,10 @@
 namespace Btinet\Ringhorn\Model;
 
 use \ReflectionClass;
+use \ReflectionProperty;
+use \ReflectionException;
+use \Exception;
+use Btinet\Ringhorn\Logger;
 
 class EntityManager
 {
@@ -16,14 +20,18 @@ class EntityManager
     }
 
     public function persist($entity, $id = false){
-        $this->entity = new ReflectionClass($entity);
+        self::generateReflectionClass($entity);
         $class_name = strtolower($this->entity->getShortName());
         foreach($this->entity->getProperties() as $property){
             foreach ($property as $key => $value){
                 if($key == 'name'){
-                    $value = strtoupper($value);
-                    $method = "get$value";
-                    $data[$value] = $entity->$method();
+                    $rp = new ReflectionProperty($entity, $value);
+                    if($rp->isInitialized($entity)){
+                        $mvalue = ucfirst($value);
+                        $method = "get$mvalue";
+
+                        $data[$value] = $entity->$method();
+                    }
                 }
             }
         };
@@ -37,16 +45,38 @@ class EntityManager
         }
     }
 
-    public function remove($entity, $id = false){
-        $this->entity = new ReflectionClass($entity);
+    public function remove($entity, $id)
+    {
+        self::generateReflectionClass($entity);
         $class_name = strtolower($this->entity->getShortName());
-        if ($id){
+        if ($id) {
             $row = $this->db->select("SELECT * FROM $class_name WHERE id = :id", ['id' => $id]);
-            if ($row){
+            if ($row) {
                 return $this->db->delete($class_name, ['id' => $id]);
             }
         } else {
             return false;
+        }
+    }
+
+    public function truncate($entity)
+    {
+        self::generateReflectionClass($entity);
+        $class_name = strtolower($this->entity->getShortName());
+        try {
+            return $this->db->truncate($class_name);
+        } catch (Exception $e){
+            Logger::newMessage($e);
+            Logger::customErrorMsg($e);
+        }
+    }
+
+    protected function generateReflectionClass($entity){
+        try {
+            return $this->entity = new ReflectionClass($entity);
+        } catch (ReflectionException $reflectionException){
+            Logger::newMessage($reflectionException);
+            Logger::customErrorMsg($reflectionException);
         }
     }
 

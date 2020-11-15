@@ -49,10 +49,8 @@ class Database extends PDO {
         $stmt = $this->prepare(" INSERT INTO $table ($fieldNames) VALUES ($fieldValues) ");
 
         foreach ($data as $key => $value) {
-            $stmt->bindParam(":$key", $value, PDO::PARAM_STR);
+            $stmt->bindValue(":$key", $value);
         }
-
-
 
         $this->execute($stmt);
         return $this->lastInsertId();
@@ -137,7 +135,14 @@ class Database extends PDO {
     }
 
     public function truncate($table) {
-        return $this->exec("TRUNCATE TABLE $table");
+        try {
+            $this->exec("TRUNCATE TABLE $table");
+            return $table;
+        } catch (PDOException $e){
+            Logger::newMessage($e);
+            Logger::customErrorMsg($e);
+        }
+
     }
 
     private function execute($statement){
