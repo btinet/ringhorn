@@ -142,7 +142,6 @@ class Database extends PDO {
             Logger::newMessage($e);
             Logger::customErrorMsg($e);
         }
-
     }
 
     private function execute($statement){
@@ -156,3 +155,4 @@ class Database extends PDO {
     }
 
 }
+
