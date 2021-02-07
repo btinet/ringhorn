@@ -6,8 +6,8 @@
     "authors": [
         {
             "name": "Benjamin Voigt",
-       	    "email": "benjamin.voigt@btinet.org",
-	    "homepage": "https://www.simplemvc.com"
+       	    "email": "benjamin.voigt@vapita.de",
+	    "homepage": "https://www.ringhorn.de"
         }
     ],
     "minimum-stability": "dev",
