@@ -117,6 +117,7 @@ class Bootstrap {
             Logger::customErrorMsg($e);
         }
 
+	unset($this->url[1]);
 
         $parameter = filter_var_array($this->url, FILTER_SANITIZE_STRING);
         call_user_func_array(array($this->controller, $method), $parameter);
