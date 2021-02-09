@@ -26,6 +26,12 @@ class Bootstrap {
         $dotenv = new Dotenv();
         $dotenv->loadEnv(project_root. '/.env');
 
+        if(isset($_ENV['DEFAULT_CONTROLLER'])){
+            $this->setController($_ENV['DEFAULT_CONTROLLER']);
+        } else {
+            die('Es wurde kein Standardcontroller festgelegt.');
+        }
+
         if (isset($_ENV['APP_ENV'])) {
             switch ($_ENV['APP_ENV']) {
                 case 'development':
@@ -45,7 +51,7 @@ class Bootstrap {
     /**
      * @param $name
      */
-    public function setController($name) {
+    private function setController($name) {
         $this->defaultController = $name;
     }
 
