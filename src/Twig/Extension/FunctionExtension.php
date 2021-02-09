@@ -16,6 +16,14 @@ class FunctionExtension extends \Twig\Extension\AbstractExtension
         return $uri;
     }
 
+    public function generateRoute($uri, array $mandatory = null){
+        $uri = $this->getHost().'/'.$uri;
+        foreach($mandatory as $name => $value){
+            $uri .= "/$value";
+        }
+        return $uri;
+    }
+
     public function getEntryLinkTags($entrypoint){
         $url = project_root.'/public/build/entrypoints.json';
         $json = file_get_contents($url);
@@ -56,6 +64,7 @@ class FunctionExtension extends \Twig\Extension\AbstractExtension
     {
         return [
             new \Twig\TwigFunction('link', array($this,'generateLink')),
+            new \Twig\TwigFunction('route', array($this,'generateRoute')),
             new \Twig\TwigFunction('get_entry_link_tags', array($this,'getEntryLinkTags')),
             new \Twig\TwigFunction('get_entry_script_tags', array($this,'getEntryScriptTags')),
         ];
