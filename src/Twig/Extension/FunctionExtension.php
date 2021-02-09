@@ -45,11 +45,11 @@ class FunctionExtension extends \Twig\Extension\AbstractExtension
                 $ausgabe = $entrypoint_name['js'];
             }
         }
-        $css_ausgabe = '';
-        foreach ($ausgabe as $css){
-            $css_ausgabe .= '<script src="'.$host.$css.'"></script>';
+        $js_ausgabe = '';
+        foreach ($ausgabe as $js){
+            $js_ausgabe .= '<script src="'.$host.$js.'"></script>';
         }
-        return $css_ausgabe;
+        return $js_ausgabe;
     }
 
     public function getFunctions()
