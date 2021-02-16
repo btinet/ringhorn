@@ -44,7 +44,7 @@ abstract class EntityRepository
         return $this->db->select('SELECT * FROM '.$this->table.' ');
     }
 
-    public function findBy($criteria = array(), $sort = false){
+    public function findBy($criteria = array(), array $sort = array()){
 
         $criteria_data = $this->createSqlConditions($criteria);
         return $this->db->select('SELECT * FROM '.$this->table.' '.$criteria_data, $criteria);
