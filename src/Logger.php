@@ -2,25 +2,47 @@
 
 namespace Btinet\Ringhorn;
 
+
+use Btinet\Ringhorn\Twig\Extension\FunctionExtension;
 use Exception;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class Logger {
 
-    private static $print_error = false;
+    public function __construct()
+    {
+        $debug = ($_ENV['APP_ENV'] !== 'production') ?: true;
 
-    public static function customErrorMsg(Exception $exception) {
-        echo "<p>Es ist ein Fehler aufgetreten.</p>";
-        echo "<p>{$exception->getMessage()}</p>";
-        echo "<p>Affected Line: {$exception->getLine()} in {$exception->getFile()}</p>";
+        $loader = new FilesystemLoader(project_root.'/templates');
+        $this->view = new Environment($loader, [
+            'cache' => project_root.'/var/cache',
+            'debug' => $debug
+        ]);
+
+        if ($debug){
+            $this->view->addExtension(new \Twig\Extension\DebugExtension());
+        }
+        $this->view->addExtension(new FunctionExtension());
+    }
+
+    private  $print_error = false;
+
+    public function customErrorMsg(Exception $exception) {
+        echo $this->view->render('error/default.html.twig',[
+            'message' => $exception->getMessage(),
+            'line' => $exception->getLine(),
+            'file' => $exception->getFile()
+        ]);
         exit;
     }
 
-    public static function exception_handler($e) {
+    public  function exception_handler($e) {
         self::newMessage($e);
         self::customErrorMsg($e);
     }
 
-    public static function error_handler($number, $message, $file, $line) {
+    public function error_handler($number, $message, $file, $line) {
         $msg = "$message in $file on line $line";
 
         if ( ($number !== E_NOTICE) && ($number < 2048) ) {
@@ -31,7 +53,7 @@ class Logger {
         return 0;
     }
 
-    public static function newMessage(Exception $exception, $print_error = false, $clear = false, $error_file = 'errorlog.html') {
+    public function newMessage(Exception $exception, $print_error = false, $clear = false, $error_file = 'errorlog.html') {
 
         $file_path = project_root.'/var/'.$error_file;
 
@@ -70,7 +92,7 @@ class Logger {
         }
     }
 
-    public static function errorMessage($error, $print_error = false, $error_file = 'errorlog.html') {
+    public function errorMessage($error, $print_error = false, $error_file = 'errorlog.html') {
 
         $date = date('M d, Y G:iA');
         $log_message = "<p>Error on $date - $error</p>\n\n";

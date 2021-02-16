@@ -18,8 +18,10 @@ class FunctionExtension extends \Twig\Extension\AbstractExtension
 
     public function generateRoute($uri, array $mandatory = null){
         $uri = $this->getHost().'/'.$uri;
-        foreach($mandatory as $name => $value){
-            $uri .= "/$value";
+        if ($mandatory) {
+            foreach ($mandatory as $name => $value) {
+                $uri .= "/$value";
+            }
         }
         return $uri;
     }

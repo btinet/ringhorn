@@ -43,8 +43,9 @@ class View
         try {
             echo $this->view->render($template, $options);
         } catch (Exception $e) {
-            Logger::newMessage($e);
-            Logger::customErrorMsg($e);
+            $logger = new Logger();
+            $logger->newMessage($e);
+            $logger->customErrorMsg($e);
         }
     }
 }

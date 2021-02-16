@@ -110,6 +110,16 @@ abstract class AbstractController
         exit;
     }
 
+    public function generateRoute(string $route, array $mandatory = null){
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        if ($mandatory) {
+            foreach ($mandatory as $name => $value) {
+                $route .= "/$value";
+            }
+        }
+        return $protocol.$_SERVER['HTTP_HOST'].'/'.$route;
+    }
+
     public function halt($status = 404, $message = 'Something went wrong.') {
         if (ob_get_level() !== 0) {
             ob_clean();

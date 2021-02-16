@@ -148,8 +148,9 @@ class Database extends PDO {
         try {
             return $statement->execute();
         } catch(PDOException $e) {
-            Logger::newMessage($e);
-            Logger::customErrorMsg($e);
+            $logger = new Logger();
+            $logger->newMessage($e);
+            $logger->customErrorMsg($e);
         }
         return false;
     }
