@@ -51,4 +51,24 @@ abstract class EntityRepository
 
     }
 
+    public function findOneBy($criteria = array(), array $sort = array()){
+
+        $criteria_data = $this->createSqlConditions($criteria);
+        $result = $this->db->select(' SELECT * FROM '.$this->table.' '.$criteria_data.' LIMIT 1 ', $criteria);
+        return array_pop($result);
+
+    }
+
+    public function getPrevious($id)
+    {
+        $result = $this->db->select('SELECT * FROM '.$this->table. ' WHERE id < :id ORDER BY id DESC LIMIT 1',['id' => $id]);
+        return array_pop($result);
+    }
+
+    public function getNext($id)
+    {
+        $result = $this->db->select('SELECT * FROM '.$this->table. ' WHERE id > :id ORDER BY id ASC LIMIT 1',['id' => $id]);
+        return array_pop($result);
+    }
+
 }

@@ -86,11 +86,12 @@ class Bootstrap {
             if (class_exists($this->controller)){
                 $this->controller = new $this->controller();
             } else {
-                throw new Exception('Controller-Klasse gibts nicht, daher m&ouml;chte ich nun eine Fehlerseite ausgeben.');
+                throw new Exception("Controller-Klasse nicht gefunden!");
             }
         } catch(Exception $e) {
-            Logger::newMessage($e);
-            Logger::customErrorMsg($e);
+            $logger = new Logger();
+            $logger->newMessage($e);
+            $logger->customErrorMsg($e);
         }
 
 

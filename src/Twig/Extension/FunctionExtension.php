@@ -62,6 +62,14 @@ class FunctionExtension extends \Twig\Extension\AbstractExtension
         return $js_ausgabe;
     }
 
+
+
+    function getTokenParsers() {
+        return array(
+            new BreakToken(),
+        );
+    }
+
     public function getFunctions()
     {
         return [
@@ -72,6 +80,9 @@ class FunctionExtension extends \Twig\Extension\AbstractExtension
         ];
     }
 
-
+    public function getName()
+    {
+        return FunctionExtension::t('Vapita For-Break Tag');
+    }
 
 }

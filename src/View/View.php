@@ -6,6 +6,7 @@ use Btinet\Ringhorn\Logger;
 use Btinet\Ringhorn\Twig\Extension\FunctionExtension;
 use Exception;
 use Twig\Environment;
+use Twig\Extra\Intl\IntlExtension;
 use Twig\Loader\FilesystemLoader;
 
 class View
@@ -31,6 +32,7 @@ class View
         if ($debug){
             $this->view->addExtension(new \Twig\Extension\DebugExtension());
         }
+        $this->view->addExtension(new IntlExtension());
         $this->view->addExtension(new FunctionExtension());
     }
 
