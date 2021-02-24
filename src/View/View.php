@@ -2,6 +2,7 @@
 
 namespace Btinet\Ringhorn\View;
 
+use Btinet\Ringhorn\Controller\AbstractController;
 use Btinet\Ringhorn\Logger;
 use Btinet\Ringhorn\Twig\Extension\FunctionExtension;
 use Exception;
@@ -16,12 +17,14 @@ class View
      * @var Environment
      */
     protected Environment $view;
+    protected $globals;
 
     /**
      * View constructor.
      */
-    function __construct(){
+    function __construct($globals = null){
         $debug = ($_ENV['APP_ENV'] !== 'production') ?: true;
+        $this->globals = $globals;
 
         $loader = new FilesystemLoader(project_root.'/templates');
         $this->view = new Environment($loader, [
@@ -34,6 +37,7 @@ class View
         }
         $this->view->addExtension(new IntlExtension());
         $this->view->addExtension(new FunctionExtension());
+        $this->view->addGlobal('app',$this->globals);
     }
 
     /**

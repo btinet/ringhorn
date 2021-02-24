@@ -49,6 +49,9 @@ class Database extends PDO {
         $stmt = $this->prepare(" INSERT INTO $table ($fieldNames) VALUES ($fieldValues) ");
 
         foreach ($data as $key => $value) {
+            if(is_array($value)){
+                $value = json_encode($value);
+            }
             $stmt->bindValue(":$key", $value);
         }
 

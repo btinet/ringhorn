@@ -8,7 +8,9 @@ use Btinet\Ringhorn\Logger;
 use Btinet\Ringhorn\Model\EntityManager;
 use Btinet\Ringhorn\Password;
 use Btinet\Ringhorn\Request;
+use Btinet\Ringhorn\Security;
 use Btinet\Ringhorn\Session;
+use Btinet\Ringhorn\User;
 use Btinet\Ringhorn\View\View;
 use Exception;
 use \ReflectionClass;
@@ -23,11 +25,6 @@ abstract class AbstractController
     protected Logger $logger;
 
     /**
-     * @var Password
-     */
-    protected Password $passwordEncoder;
-
-    /**
      * @var Request
      */
     protected Request $request;
@@ -36,6 +33,11 @@ abstract class AbstractController
      * @var Session
      */
     protected Session $session;
+
+    /**
+     * @var Security
+     */
+    protected Security $security;
 
     /**
      * @var View
@@ -47,23 +49,59 @@ abstract class AbstractController
      */
     protected Flash $flash;
 
+    /**
+     * @var User
+     */
+    protected User $user;
+
         /**
      * AbstractController constructor.
      */
     function __construct()
     {
-        $this->view = new View();
 
         $this->session = new Session();
         $this->session->init();
 
-
-
-        $this->flash = new Flash($this->view);
-        $this->passwordEncoder = new Password();
         $this->request = new Request();
         $this->request->csrf_token = $this->session->get('csrf_token');
         $this->generateToken();
+
+        $this->view = new View([
+            'user' => $this->getUser(),
+            'csrf_token' => $this->session->get('csrf_token')
+        ]);
+
+        $this->flash = new Flash($this->view);
+        $this->user = new User();
+        $this->security = new Security($this->session);
+
+    }
+
+    public function getUser(){
+
+        $userRepository = $this->getRepository($_ENV['USER_CONTROLLER']);
+
+        if ($this->session->get('login')){
+            $result = $userRepository->findOneBy([
+                'id' => $this->session->get('user', 'id')
+            ]);
+
+            $user = new $_ENV['USER_CONTROLLER']();
+
+            $user->setUsername($result['username']);
+            $user->setEmail($result['email']);
+            $user->setPassword($result['password']);
+            $user->setRoles(json_decode($result['roles']));
+            $user->setFirstname($result['firstname']);
+            $user->setLastname($result['lastname']);
+            $user->setIsActive($result['isActive']);
+            $user->setIsBlocked($result['isBlocked']);
+
+            return $user;
+        }
+
+        return false;
 
     }
 
@@ -82,17 +120,13 @@ abstract class AbstractController
     }
 
     public function generateToken(){
-
         $csrfToken = null;
-
         try {
             $csrfToken = sha1(random_bytes(9));
         } catch (Exception $e) {
             $this->catchException($e);
         }
-
         $this->session->set('csrf_token',$csrfToken);
-
         return $csrfToken;
     }
 
