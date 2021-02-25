@@ -49,11 +49,6 @@ abstract class AbstractController
      */
     protected Flash $flash;
 
-    /**
-     * @var User
-     */
-    protected User $user;
-
         /**
      * AbstractController constructor.
      */
@@ -68,40 +63,11 @@ abstract class AbstractController
         $this->generateToken();
 
         $this->view = new View([
-            'user' => $this->getUser(),
             'csrf_token' => $this->session->get('csrf_token')
         ]);
 
         $this->flash = new Flash($this->view);
-        $this->user = new User();
         $this->security = new Security($this->session);
-
-    }
-
-    public function getUser(){
-
-        $userRepository = $this->getRepository($_ENV['USER_CONTROLLER']);
-
-        if ($this->session->get('login')){
-            $result = $userRepository->findOneBy([
-                'id' => $this->session->get('user', 'id')
-            ]);
-
-            $user = new $_ENV['USER_CONTROLLER']();
-
-            $user->setUsername($result['username']);
-            $user->setEmail($result['email']);
-            $user->setPassword($result['password']);
-            $user->setRoles(json_decode($result['roles']));
-            $user->setFirstname($result['firstname']);
-            $user->setLastname($result['lastname']);
-            $user->setIsActive($result['isActive']);
-            $user->setIsBlocked($result['isBlocked']);
-
-            return $user;
-        }
-
-        return false;
 
     }
 

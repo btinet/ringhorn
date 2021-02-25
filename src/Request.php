@@ -50,20 +50,14 @@ class Request
      * @param $FormFieldName
      * @return mixed
      */
-    public function getQuery(string $FormFieldName)
+    public function post(string $FormFieldName)
     {
         try {
-            if ($FormFieldName !== NULL){
-                $query = filter_input(INPUT_POST, $FormFieldName, FILTER_SANITIZE_STRIPPED);
-                return $this->query = $query;
-            } else {
-                throw new Exception($query_exception);
-            }
+             $query = filter_input(INPUT_POST, $FormFieldName, FILTER_SANITIZE_STRIPPED);
+             return $this->query = $query;
         } catch (Exception $query_exception){
             Logger::newMessage($query_exception);
             Logger::customErrorMsg($query_exception);
         }
-
     }
-
 }

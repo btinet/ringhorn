@@ -3,7 +3,6 @@
 
 namespace Btinet\Ringhorn;
 
-use Btinet\Ringhorn\View\View;
 
 /**
  * Class User
