@@ -3,6 +3,7 @@
 
 namespace Btinet\Ringhorn;
 
+use App\Translation\ErrorTranslation;
 use Btinet\Ringhorn\View\View;
 
 class Flash
