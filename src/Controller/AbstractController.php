@@ -10,7 +10,7 @@ use Btinet\Ringhorn\Password;
 use Btinet\Ringhorn\Request;
 use Btinet\Ringhorn\Security;
 use Btinet\Ringhorn\Session;
-use Btinet\Ringhorn\User;
+use Btinet\Ringhorn\Translation;
 use Btinet\Ringhorn\View\View;
 use Exception;
 use \ReflectionClass;
@@ -54,6 +54,7 @@ abstract class AbstractController
      */
     function __construct()
     {
+        date_default_timezone_set('Europe/Berlin');
 
         $this->session = new Session();
         $this->session->init();
@@ -63,12 +64,47 @@ abstract class AbstractController
         $this->generateToken();
 
         $this->view = new View([
-            'csrf_token' => $this->session->get('csrf_token')
+            'csrf_token' => $this->session->get('csrf_token'),
+            'login' => $this->session->get('login'),
+            'user' => $this->getUser(),
+            'session' => $this->session,
         ]);
 
         $this->flash = new Flash($this->view);
         $this->security = new Security($this->session);
 
+    }
+
+    public function getUser(){
+        if ($this->session->get('login') && isset($_ENV['USER_CONTROLLER'])){
+            $userRepository = self::getRepository($_ENV['USER_CONTROLLER']);
+            $user = $userRepository->findOneBy([
+                'id' => $this->session->get('user')
+            ]);
+            if($user){
+                $userClass = $_ENV['USER_CONTROLLER'];
+                $userObject = new $userClass();
+                foreach($user as $key => $value){
+                    try {
+                        if(property_exists($userClass,$key)){
+                            $value = ($key == 'roles') ? json_decode($value, true) : $value;
+                            $rp = new \ReflectionProperty($userObject, $key);
+                            $key = "set".ucfirst($key);
+                            if (method_exists($userClass,$key)) {
+                                $userObject->$key($value);
+                            }
+                        }
+                    } catch (ReflectionException $e) {
+                        die("Something went wrong!");
+                    }
+                }
+                if ($userObject->getLanguage()){
+                   $this->session->set('userLocale', $userObject->getLanguage());
+                }
+                return $userObject;
+            }
+        }
+        return false;
     }
 
     public function getEntityManager(){
@@ -110,12 +146,15 @@ abstract class AbstractController
         exit;
     }
 
-    public function generateRoute(string $route, array $mandatory = null){
+    public function generateRoute(string $route, array $mandatory = null,$anchor = null){
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         if ($mandatory) {
             foreach ($mandatory as $name => $value) {
                 $route .= "/$value";
             }
+        }
+        if($anchor){
+            $route .= "#$anchor";
         }
         return $protocol.$_SERVER['HTTP_HOST'].'/'.$route;
     }

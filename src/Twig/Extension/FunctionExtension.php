@@ -16,12 +16,15 @@ class FunctionExtension extends \Twig\Extension\AbstractExtension
         return $uri;
     }
 
-    public function generateRoute($uri, array $mandatory = null){
+    public function generateRoute($uri, array $mandatory = null,$anchor = null){
         $uri = $this->getHost().'/'.$uri;
         if ($mandatory) {
             foreach ($mandatory as $name => $value) {
                 $uri .= "/$value";
             }
+        }
+        if($anchor){
+            $uri .= "#$anchor";
         }
         return $uri;
     }

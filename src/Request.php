@@ -52,12 +52,7 @@ class Request
      */
     public function post(string $FormFieldName)
     {
-        try {
-             $query = filter_input(INPUT_POST, $FormFieldName, FILTER_SANITIZE_STRIPPED);
-             return $this->query = $query;
-        } catch (Exception $query_exception){
-            Logger::newMessage($query_exception);
-            Logger::customErrorMsg($query_exception);
-        }
+         $query = filter_input(INPUT_POST, $FormFieldName, FILTER_SANITIZE_STRIPPED);
+         return $this->query = isset($query) ? $query : false;
     }
 }

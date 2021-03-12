@@ -29,8 +29,13 @@ class EntityManager
                     if($rp->isInitialized($entity)){
                         $mvalue = ucfirst($value);
                         $method = "get$mvalue";
-
-                        $data[$value] = $entity->$method();
+                        $entityProperty = $entity->$method();
+                        if ($entityProperty instanceof \DateTime){
+                            $entityProperty = $entityProperty->format('Y-m-d H:i:s');
+                        } else {
+                            $entityProperty = $entityProperty;
+                        }
+                        $data[$value] = $entityProperty;
                     }
                 }
             }

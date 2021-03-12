@@ -3,6 +3,7 @@
 namespace Btinet\Ringhorn\Model;
 
 use Btinet\Ringhorn\Logger;
+use Cassandra\Date;
 use \PDO;
 use PDOException;
 
@@ -28,6 +29,7 @@ class Database extends PDO {
     public function select($prepared_sql, $data = array()) {
         $statement = $this->prepare($prepared_sql);
         foreach($data as $key => $value) {
+            $value = $value instanceof \DateTime ? $value->format('Y-m-d H:i:s') : $value;
             $statement->bindValue(':'.$key, $value);
         }
         $this->execute($statement);

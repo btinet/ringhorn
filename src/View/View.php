@@ -44,6 +44,9 @@ class View
         $this->view->addExtension(new FunctionExtension());
         $this->view->addGlobal('app',$this->globals);
         $this->view->addGlobal('trans',$this->trans);
+        $this->view->addGlobal('locale',$trans->locale);
+        $this->view->addGlobal('locales',$trans->availableLanguages);
+
     }
 
     /**
